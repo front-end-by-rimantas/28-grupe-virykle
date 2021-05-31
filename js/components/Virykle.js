@@ -1,9 +1,13 @@
 class Virykle {
-    constructor(selector, elementsCount) {
+    constructor(selector, elementsCount, id) {
         this.selector = selector;
         this.elementsCount = elementsCount;         // kaitlentes pavirsiai / kaitvietes
+        this.id = id;
 
         this.DOM = null;
+        this.rangesDOM = null;
+        this.allElementsDOM = null;     // []
+        this.allSwitchesDOM = null;     // []
         this.price = 1000;
         this.proportion = {
             x: 1,
@@ -16,7 +20,8 @@ class Virykle {
     init() {
         if (!this.isValidSelector() ||
             !this.findElementBySelector() ||
-            !this.isValidElementsCount()) {
+            !this.isValidElementsCount() ||
+            !this.isValidID()) {
             return false;
         }
 
@@ -43,6 +48,14 @@ class Virykle {
             !isFinite(this.elementsCount) ||
             this.elementsCount <= 0 ||
             this.elementsCount % 1 !== 0) {
+            return false;
+        }
+        return true;
+    }
+
+    isValidID() {
+        if (typeof this.id !== 'string' ||
+            this.id === '') {
             return false;
         }
         return true;
@@ -80,7 +93,7 @@ class Virykle {
         const rangesBorderWidth = 1;
         const width = fullElementWidth * this.proportion.x + rangesBorderWidth * 2;
 
-        const HTML = `<div class="virykle" style="width: ${width}px;">
+        const HTML = `<div id="${this.id}" class="virykle" style="width: ${width}px;">
                         <div class="kaitlentes">
                             ${this.generateElements()}
                         </div>
@@ -90,6 +103,11 @@ class Virykle {
                     </div>`;
 
         this.DOM.insertAdjacentHTML('beforeend', HTML);
+        this.rangesDOM = this.DOM.querySelector('#' + this.id);
+        this.allElementsDOM = this.rangesDOM.querySelectorAll('.kaitlente');
+        this.allSwitchesDOM = this.rangesDOM.querySelectorAll('.jungiklis');
+
+        console.log(this);
     }
 }
 
