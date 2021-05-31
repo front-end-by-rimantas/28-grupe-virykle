@@ -27,6 +27,7 @@ class Virykle {
 
         this.calcProportions();
         this.render();
+        this.addEvents();
     }
 
     isValidSelector() {
@@ -93,6 +94,7 @@ class Virykle {
         const rangesBorderWidth = 1;
         const width = fullElementWidth * this.proportion.x + rangesBorderWidth * 2;
 
+        // sukonstruojamas HTML
         const HTML = `<div id="${this.id}" class="virykle" style="width: ${width}px;">
                         <div class="kaitlentes">
                             ${this.generateElements()}
@@ -102,12 +104,25 @@ class Virykle {
                         </div>
                     </div>`;
 
+        // istatome i NARSYKLE
         this.DOM.insertAdjacentHTML('beforeend', HTML);
+
+        // susirandame tai ka katik sukureme
         this.rangesDOM = this.DOM.querySelector('#' + this.id);
         this.allElementsDOM = this.rangesDOM.querySelectorAll('.kaitlente');
         this.allSwitchesDOM = this.rangesDOM.querySelectorAll('.jungiklis');
+    }
 
-        console.log(this);
+    addEvents() {
+        for (let i = 0; i < this.allSwitchesDOM.length; i++) {
+            const elementDOM = this.allElementsDOM[i];
+            const switchDOM = this.allSwitchesDOM[i];
+
+            switchDOM.addEventListener('click', () => {
+                switchDOM.classList.toggle('ijungtas');
+                elementDOM.classList.toggle('ijungtas');
+            })
+        }
     }
 }
 
